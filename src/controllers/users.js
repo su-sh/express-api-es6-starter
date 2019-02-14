@@ -12,7 +12,9 @@ import * as userService from '../services/userService';
 export function fetchAll(req, res, next) {
   userService
     .getAllUsers()
-    .then(data => res.json({ data }))
+    .then(data => {
+      res.json({ data });
+    })
     .catch(err => next(err));
 }
 
@@ -41,7 +43,9 @@ export function create(req, res, next) {
   userService
     .createUser(req.body)
     .then(data => res.status(HttpStatus.CREATED).json({ data }))
-    .catch(err => next(err));
+    .catch(err => {
+      next(err);
+    });
 }
 
 /**
@@ -54,7 +58,9 @@ export function create(req, res, next) {
 export function update(req, res, next) {
   userService
     .updateUser(req.params.id, req.body)
-    .then(data => res.json({ data }))
+    .then(data => {
+      res.json({ data });
+    })
     .catch(err => next(err));
 }
 

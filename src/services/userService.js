@@ -1,6 +1,4 @@
-import Boom from 'boom';
-
-import User from '../models/user';
+import * as usersDao from '../dao/usersDao';
 
 /**
  * Get all users.
@@ -8,23 +6,7 @@ import User from '../models/user';
  * @returns {Promise}
  */
 export function getAllUsers() {
-  return User.fetchAll();
-}
-
-/**
- * Get a user.
- *
- * @param   {Number|String}  id
- * @returns {Promise}
- */
-export function getUser(id) {
-  return new User({ id }).fetch().then(user => {
-    if (!user) {
-      throw Boom.notFound('User not found');
-    }
-
-    return user;
-  });
+  return usersDao.getAllUsers();
 }
 
 /**
@@ -34,7 +16,7 @@ export function getUser(id) {
  * @returns {Promise}
  */
 export function createUser(user) {
-  return new User({ name: user.name }).save();
+  return usersDao.addUser({ name: user.name, updated_at: new Date() });
 }
 
 /**
@@ -45,7 +27,17 @@ export function createUser(user) {
  * @returns {Promise}
  */
 export function updateUser(id, user) {
-  return new User({ id }).save({ name: user.name });
+  return usersDao.updateUser(id, { name: user.name, updated_at: new Date() });
+}
+
+/**
+ * Get a user.
+ *
+ * @param   {Number|String}  id
+ * @returns {Promise}
+ */
+export function getUser(id) {
+  return usersDao.getUser(id);
 }
 
 /**
@@ -55,5 +47,5 @@ export function updateUser(id, user) {
  * @returns {Promise}
  */
 export function deleteUser(id) {
-  return new User({ id }).fetch().then(user => user.destroy());
+  return usersDao.deleteUser(id);
 }
